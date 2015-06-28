@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        *{margin: 0;padding:0;}
+        #music{
+            width:740px;
+            height:248px;
+            background: url(images/bg2.png);
+            margin: 100px auto;
+
+        }
+        #music .musicImg{
+            width: 248px;
+            height: 248px;
+            /*background: red;*/
+            float: left;
+            /*display: inline-block;*/
+        }
+        #music .musicImg img.musicImg{
+            width: 248px;
+            height: 248px;
+            border-radius:124px;
+        }
+        #music .musicCon{
+            width: 480px;
+            height: 248px;
+            float:right;
+            /*background: yellow;*/
+            /*display: inline-block;*/
+        }
+        #music .musicCon h2{
+            color: #fff;
+            font-size: 22px;
+            font-family: '微软雅黑';
+            font-weight: 100;
+            /*border: 1px solid red;*/
+            line-height: 70px;
+        }
+        #music .musicCon dl{
+            height: 68px;
+            width: 470px;
+        }
+        #music .musicCon dl dt{
+            height: 68px;
+            width: 68px;
+            /*background: red;*/
+            float:left;
+        }
+        #music .musicCon dl dd{
+            width: 380px;
+            height: 68px;
+            /*background: green;*/
+            float: right;
+            position: relative;
+        }
+        #music .musicCon dl dd .musicJd{
+            width: 100%;
+            height:5px;
+            background: #898989;
+            position: absolute;
+            top:31px;
+        }
+        #music .musicCon dl dd .musicJd2{
+            width: 0;
+            height:5px;
+            background: #fff;
+            position: absolute;
+            top:31px;
+        }
+        #music .musicCon ol{
+            clear:both;
+            width: 470px;
+            height:51px;
+            padding-left: 60px;
+        }
+        #music .musicCon ol li{
+            float: left;
+            list-style: none;
+            margin-left: 35px;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="jquery.js"></script>
+    <script>
+
+        $(function(){
+            var mark=true;
+            var arrMusic=['mp3/梦的翅膀受了伤.mp3','mp3/泡沫.mp3','mp3/咱们结婚吧.mp3','mp3/李白.mp3'];
+            var arrSinger=['梦的翅膀受了伤-蒋雪儿','泡沫-邓紫棋','咱们结婚吧-齐晨','李白-李荣浩'];
+            var arrBgImg=['images/music4.jpg','images/music3.jpg','images/music2.jpg','images/music1.jpg'];
+            var m=1,n=1;
+            //播放和暂停
+            $("img.playBut").click(function(){
+
+                if(mark){
+                    $(this).attr('src','images/pause.png');
+                    $('audio').get(0).play();
+                    timer=setInterval(playJd,1000);
+                }else{
+                    $(this).attr('src','images/play.png');
+                    $('audio').get(0).pause();
+                    clearInterval(timer);
+                }
+                mark=!mark;
+            });
+            function play(){
+
+            }
+            //进度条的控制
+            function playJd(){
+                var currentTime=$('audio').get(0).currentTime;
+                var allTime=$('audio').get(0).duration;
+                var bl=currentTime/allTime;
+                var jdWidth=bl*parseInt($('.musicJd').css('width'));
+                console.log();
+                $('p.musicJd2').css('width',jdWidth);
+
+                if(currentTime==allTime){
+                    n=m;
+                    if(n==4){
+                        n=0;
+                    }
+                    change(n);
+                    n++;
+                    m=n;
+                }
+            }
+
+
+            //切换歌曲
+            function change(i){
+                $('img.musicImg').attr('src',arrBgImg[i]);
+                $('audio').attr('src',arrMusic[i]);
+                $('h2').html(arrSinger[i]);
+
+                $("img.playBut").attr('src','images/pause.png');
+                $('audio').attr('autoplay','autoplay');
+                timer=setInterval(playJd,1000);
+                mark=false;
+            }
+            $('img.prev').click(function(){
+
+                if(m==-1){
+                    m=3;
+                }
+                change(m);
+                m--;
+            });
+            $('img.next').click(function(){
+
+                if(m==4){
+                    m=0;
+                }
+                change(m);
+                m++;
+            });
+
+        })
+
+    </script>
+</head>
+<body>
+<div id="music">
+    <div class="musicImg">
+        <img src="images/music4.jpg" alt="" class="musicImg" >
+    </div>
+    <div class="musicCon">
+        <h2>梦的翅膀受了伤-蒋雪儿</h2>
+        <dl>
+            <dt>
+
+                <img src="images/play.png" alt="" class="playBut">
+
+            </dt>
+            <dd>
+
+                <p class="musicJd"></p>
+                <p class="musicJd2"></p>
+
+            </dd>
+        </dl>
+
+        <ol>
+            <li><img src="images/prev.png" alt="" class="prev"></li>
+            <li><img src="images/next.png" alt="" class="next"></li>
+            <li><img src="images/down.png" alt=""></li>
+            <li><img src="images/del.png" alt=""></li>
+        </ol>
+
+    </div>
+
+</div>
+<audio src="mp3/梦的翅膀受了伤.mp3" controls ></audio>
+</body>
+</html>
